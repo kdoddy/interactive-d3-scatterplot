@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useRef } from 'react';
 import './App.css';
+import * as d3 from 'd3';
+import InteractiveScatter from './InteractiveScatter';
+
+const D3blackbox = ({ x, y, render }) => {
+  const refAnchor = useRef(null);
+
+  useEffect(() => {
+    render(d3.select(refAnchor.current))
+  });
+
+  return <g ref={refAnchor} transform={`translate(${x}, ${y})`} />;
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <svg width='900' height='900'>
+        <D3blackbox x={0} y={0} render={svg => InteractiveScatter(svg, 600, 600)} />
+      </svg>
     </div>
   );
 }
